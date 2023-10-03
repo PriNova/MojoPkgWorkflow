@@ -43,14 +43,19 @@ jobs:
       runs-on: ubuntu-22.04
 
       steps:
+      - name: Create tag
+        run: |
+          git tag v0.0.${{ github.run_number }}
+          git push --tags
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: v0.0.${{ github.run_number }}
+          release_name: Release v0.0.${{ github.run_number }}
           draft: false
           prerelease: false
 
