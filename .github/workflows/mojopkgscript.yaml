@@ -23,6 +23,7 @@ jobs:
         sudo dpkg -i modular_0.2.0_amd64.deb
         sudo apt-get install -f
         modular clean
+        modular auth ${{ secrets.MODULAR_API }}
         modular install mojo
 
     - name: Set MODULAR_HOME path
