@@ -39,7 +39,7 @@ jobs:
 #        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
     - name: Upload package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: package-artifact
         path: ${{ github.workspace }}/$PACKAGE_NAME
