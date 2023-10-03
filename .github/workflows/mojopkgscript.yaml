@@ -32,8 +32,12 @@ jobs:
         echo "$MODULAR_HOME/pkg/packages.modular.com_mojo/bin" >> $GITHUB_PATH
         echo "MOJO_HOME=$MODULAR_HOME/pkg/packages.modular.com_mojo/bin" >> $GITHUB_ENV
 
-    - name: Build
+    - name: Check mojo binary
       run: |
         echo "$MOJO_HOME"
+        ls $MOJO_HOME || echo "mojo binary not found"
+
+    - name: Build
+      run: |
         $MOJO_HOME/mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}.mojopkg
 #        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
