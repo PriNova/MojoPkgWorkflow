@@ -12,6 +12,8 @@ jobs:
   build:
 
     runs-on: ubuntu-22.04
+    env:
+      PACKAGE_NAME: mojopkgworkflow
 
     steps:
     - uses: actions/checkout@v2
@@ -30,5 +32,5 @@ jobs:
 
     - name: Build
       run: |
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}.mojopkg
+        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o $GITHUB_WORKSPACE/$PACKAGE_NAME.mojopkg
 #        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
