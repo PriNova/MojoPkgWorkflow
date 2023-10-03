@@ -38,34 +38,8 @@ jobs:
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.workspace }}/$PACKAGE_NAME
 #        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
-  release:
-      needs: build
-      runs-on: ubuntu-22.04
-
-      steps:
-      - name: Create tag
-        run: |
-          git tag v0.0.${{ github.run_number }}
-          git push --tags
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v0.0.${{ github.run_number }}
-          release_name: Release v0.0.${{ github.run_number }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        id: upload_release_asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/$PACKAGE_NAME
-          asset_name: $PACKAGE_NAME
-          asset_content_type: application/octet-stream
+    - name: Upload package
+      uses: actions/upload-artifact@v2
+      with:
+        name: package-artifact
+        path: ${{ github.workspace }}/$PACKAGE_NAME
