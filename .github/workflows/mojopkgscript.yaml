@@ -1,7 +1,9 @@
 name: Build and Release
 
+# define you mojo package name here
+
 env:
-  PACKAGE_NAME: mojopackage
+  PACKAGE_NAME: mojopackage.mojopkg
 
 on:
   push:
@@ -33,8 +35,8 @@ jobs:
 
     - name: Build
       run: |
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}/$PACKAGE_NAME.mojopkg
-        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
+        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.workspace }}/$PACKAGE_NAME
+#        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
   release:
       needs: build
@@ -59,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/mojopackage.mojopkg
-          asset_name: $PACKAGE_NAME.mojopkg
+          asset_path: ${{ github.workspace }}/$PACKAGE_NAME
+          asset_name: $PACKAGE_NAME
           asset_content_type: application/octet-stream
