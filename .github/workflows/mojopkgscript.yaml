@@ -1,4 +1,7 @@
-name: Build and Test
+name: Build and Release
+
+env:
+  PACKAGE_NAME: mojopackage
 
 on:
   push:
@@ -12,8 +15,6 @@ jobs:
   build:
 
     runs-on: ubuntu-22.04
-    env:
-      PACKAGE_NAME: mojopkgworkflow
 
     steps:
     - uses: actions/checkout@v2
@@ -32,5 +33,32 @@ jobs:
 
     - name: Build
       run: |
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o $GITHUB_WORKSPACE/$PACKAGE_NAME.mojopkg
-#        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
+        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}/$PACKAGE_NAME.mojopkg
+        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
+
+  release:
+      needs: build
+      runs-on: ubuntu-22.04
+
+      steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/mojopackage.mojopkg
+          asset_name: $PACKAGE_NAME.mojopkg
+          asset_content_type: application/octet-stream
