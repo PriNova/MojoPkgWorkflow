@@ -19,7 +19,9 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install modular
+        wget 'https://dl.modular.com/public/installer/deb/ubuntu/pool/any-version/main/m/mo/modular_0.2.0/modular-0.2.0-amd64.deb' -O modular_0.2.0_amd64.deb
+        sudo dpkg -i modular_0.2.0_amd64.deb
+        sudo apt-get install -f
         modular clean
         modular install mojo
 
