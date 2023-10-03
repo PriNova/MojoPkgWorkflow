@@ -35,6 +35,7 @@ jobs:
 
     - name: Build
       run: |
+        echo $GITHUB_WORKSPACE
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.workspace }}/$PACKAGE_NAME
 #        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
