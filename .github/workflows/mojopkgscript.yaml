@@ -1,9 +1,12 @@
 name: Build and Release
 
 # define your mojo package name here
+# set the path to the directory containing the module files
 
 env:
   PACKAGE_NAME: mojopackage.mojopkg
+  MOJO_DIR: src
+  MOJO_HOME: /home/runner/.modular/pkg/packages.modular.com_mojo/bin
 
 on:
   push:
@@ -32,7 +35,7 @@ jobs:
 
     - name: Build
       run: |
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package ./src -o ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
+        ${{ env.MOJO_HOME }}/mojo package ./${{ env.MOJO_DIR }} -o ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
 
     - name: Upload package
       uses: actions/upload-artifact@v3
