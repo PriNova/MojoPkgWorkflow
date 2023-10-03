@@ -1,0 +1,30 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install modular
+        modular clean
+        modular install mojo
+
+    - name: Set MODULAR_HOME path
+      run: echo "MODULAR_HOME=$HOME/.modular" >> $GITHUB_ENV
+
+    - name: Build
+      run: |
+        mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}.mojopkg
+        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
