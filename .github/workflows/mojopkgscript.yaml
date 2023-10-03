@@ -1,6 +1,6 @@
 name: Build and Release
 
-# define you mojo package name here
+# define your mojo package name here
 
 env:
   PACKAGE_NAME: mojopackage.mojopkg
@@ -30,15 +30,12 @@ jobs:
         modular auth ${{ secrets.MODULAR_API }}
         modular install mojo
 
-# TODO: Change hardcoded path to modular binary via env var
-
     - name: Build
       run: |
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package ./src -o ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
-#        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
     - name: Upload package
       uses: actions/upload-artifact@v3
       with:
-        name: package-artifact
+        name: ${{ env.PACKAGE_NAME }}
         path: ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
