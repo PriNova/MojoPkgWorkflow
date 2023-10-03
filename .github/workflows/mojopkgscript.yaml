@@ -27,7 +27,9 @@ jobs:
         modular install mojo
 
     - name: Set MODULAR_HOME path
-      run: echo "MODULAR_HOME=$HOME/.modular" >> $GITHUB_ENV
+      run: | 
+        echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
+        echo "$MODULAR_HOME/pkg/packages.modular.com_mojo/bin" >> $GITHUB_PATH
 
     - name: Build
       run: |
