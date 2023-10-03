@@ -23,7 +23,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get update
+#        sudo apt-get update
         wget -q 'https://dl.modular.com/public/installer/deb/ubuntu/pool/any-version/main/m/mo/modular_0.2.0/modular-0.2.0-amd64.deb' -O modular_0.2.0_amd64.deb
         sudo dpkg -i modular_0.2.0_amd64.deb
         sudo apt-get install -f
@@ -35,12 +35,11 @@ jobs:
 
     - name: Build
       run: |
-        echo $GITHUB_WORKSPACE
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package $GITHUB_WORKSPACE/src -o ${{ github.workspace }}/$PACKAGE_NAME
+        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo package ./src -o ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
 #        mv ${{ github.repository }}/$PACKAGE_NAME.mojopkg ${{ github.workspace }}
 
     - name: Upload package
       uses: actions/upload-artifact@v3
       with:
         name: package-artifact
-        path: ${{ github.workspace }}/$PACKAGE_NAME
+        path: ${{ github.workspace }}/${{ env.PACKAGE_NAME }}
