@@ -30,8 +30,10 @@ jobs:
       run: | 
         echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
         echo "$MODULAR_HOME/pkg/packages.modular.com_mojo/bin" >> $GITHUB_PATH
+        echo "MOJO_HOME=$MODULAR_HOME/pkg/packages.modular.com_mojo/bin" >> $GITHUB_ENV
 
     - name: Build
       run: |
-        mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}.mojopkg
-        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
+        echo "$MOJO_HOME"
+        $MOJO_HOME/mojo package $GITHUB_WORKSPACE/src -o ${{ github.repository }}.mojopkg
+#        mv ${{ github.repository }}.mojopkg ${{ github.workspace }}
